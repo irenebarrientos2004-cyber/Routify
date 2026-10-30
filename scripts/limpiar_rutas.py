@@ -5,6 +5,7 @@ Lee data/original/vias_verdes_tabla_coordenada.xlsx (hoja "vias_verdes_tabla")
 con openpyxl y genera:
   - data/rutas.json  (UTF-8, para la web)
   - data/rutas.csv   (UTF-8 con BOM, para abrir con Excel)
+  - data/rutas.js    (mismo contenido que rutas.json como `const RUTAS = [...]`)
 
 Al final imprime un informe de validación. No modifica el Excel original.
 Uso: python scripts/limpiar_rutas.py
@@ -26,6 +27,7 @@ EXCEL = RAIZ / "data" / "original" / "vias_verdes_tabla_coordenada.xlsx"
 HOJA = "vias_verdes_tabla"
 SALIDA_JSON = RAIZ / "data" / "rutas.json"
 SALIDA_CSV = RAIZ / "data" / "rutas.csv"
+SALIDA_JS = RAIZ / "data" / "rutas.js"
 
 FUENTE = "Vías Verdes (FFE / IGN)"
 
@@ -271,6 +273,15 @@ def escribir_json(rutas):
         json.dump(rutas, f, ensure_ascii=False, indent=2)
 
 
+def escribir_js(rutas):
+    """Mismo contenido que rutas.json, como variable global para cargar con <script>."""
+    with open(SALIDA_JS, "w", encoding="utf-8") as f:
+        f.write("// Generado por scripts/limpiar_rutas.py. No editar a mano.\n")
+        f.write("const RUTAS = ")
+        json.dump(rutas, f, ensure_ascii=False, indent=2)
+        f.write(";\n")
+
+
 def escribir_csv(rutas):
     campos = list(rutas[0].keys())
     with open(SALIDA_CSV, "w", encoding="utf-8-sig", newline="") as f:
@@ -374,7 +385,8 @@ def main():
     rutas, leidas, filas_excel, informe = leer_rutas()
     escribir_json(rutas)
     escribir_csv(rutas)
-    print(f"Generados: {SALIDA_JSON.relative_to(RAIZ)} y {SALIDA_CSV.relative_to(RAIZ)}")
+    escribir_js(rutas)
+    print(f"Generados: {SALIDA_JSON.relative_to(RAIZ)}, {SALIDA_CSV.relative_to(RAIZ)} y {SALIDA_JS.relative_to(RAIZ)}")
     imprimir_informe(rutas, leidas, filas_excel, informe)
 
 
