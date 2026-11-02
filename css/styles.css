@@ -49,3 +49,33 @@ nav a {
   text-decoration: none;
   border-radius: 6px;
 }
+
+
+/* SCRUM-27: Listado de rutas en tarjetas */
+.lista-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.tarjeta-ruta {
+  display: block;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.tarjeta-ruta:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+.tarjeta-ruta h3 { margin: 0 0 0.25rem 0; font-size: 1.05rem; }
+.tarjeta-provincia { margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem; }
+.tarjeta-datos { margin: 0; font-size: 0.9rem; }
+.etiqueta-dificultad { font-weight: bold; }
+.dificultad-fácil .etiqueta-dificultad { color: #2e7d32; }
+.dificultad-media .etiqueta-dificultad { color: #e65100; }
+.dificultad-difícil .etiqueta-dificultad { color: #c62828; }
