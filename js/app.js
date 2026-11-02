@@ -29,7 +29,7 @@ function obtenerRutas() {
   return RUTAS;
 }
 
-// Muestra las rutas en la página de Rutas
+// Muestra las rutas en la página de Rutas, en forma de tarjetas (SCRUM-27)
 function mostrarRutas() {
   const contenedor = document.getElementById("listado-rutas");
   if (!contenedor) return; // No estamos en la página de Rutas
@@ -41,24 +41,34 @@ function mostrarRutas() {
     return;
   }
 
+  contenedor.innerHTML = "";
+
   // Número de rutas cargadas
   const resumen = document.createElement("p");
   resumen.textContent = rutas.length + " rutas cargadas";
-  contenedor.innerHTML = "";
   contenedor.appendChild(resumen);
 
-  // Lista sencilla de rutas (el diseño en tarjetas es la historia SCRUM-27)
-  const lista = document.createElement("ul");
+  // Una tarjeta por ruta: nombre, provincia, dificultad y duración (SCRUM-27)
+  const lista = document.createElement("div");
+  lista.className = "lista-tarjetas";
+
   rutas.forEach(function (ruta) {
-    const elemento = document.createElement("li");
-    elemento.textContent =
-      ruta.nombre + " · " +
-      ruta.provincia_texto + " · " +
-      ruta.dificultad + " · " +
-      formatearDuracion(ruta.duracion_horas) + " · " +
-      ruta.distancia_km + " km";
-    lista.appendChild(elemento);
+    const tarjeta = document.createElement("a");
+    tarjeta.className = "tarjeta-ruta dificultad-" + ruta.dificultad.toLowerCase();
+    tarjeta.href = "ficha.html?id=" + ruta.id; // Escenario 2: abre la ficha de la ruta
+
+    tarjeta.innerHTML =
+      "<h3>" + ruta.nombre + "</h3>" +
+      "<p class='tarjeta-provincia'>" + ruta.provincia_texto + "</p>" +
+      "<p class='tarjeta-datos'>" +
+        "<span class='etiqueta-dificultad'>" + ruta.dificultad + "</span>" +
+        " · " + formatearDuracion(ruta.duracion_horas) +
+        " · " + ruta.distancia_km + " km" +
+      "</p>";
+
+    lista.appendChild(tarjeta);
   });
+
   contenedor.appendChild(lista);
 }
 
