@@ -50,32 +50,158 @@ nav a {
   border-radius: 6px;
 }
 
+/* Enlace del menú de la página actual */
+nav a.activo {
+  font-weight: bold;
+  border-bottom: 2px solid #f4c95d;
+}
 
-/* SCRUM-27: Listado de rutas en tarjetas */
-.lista-tarjetas {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+.boton:hover {
+  background: #246f45;
 }
-.tarjeta-ruta {
+
+/* ===== Portada (página de inicio) ===== */
+
+.portada {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 16px 32px;
+}
+
+.portada-texto {
+  flex: 1;
+}
+
+.portada-etiqueta {
+  margin: 0 0 8px;
+  color: #2e8b57;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.portada h1 {
+  margin: 0 0 16px;
+  font-size: 40px;
+  line-height: 1.15;
+  color: #1e4d3a;
+}
+
+.portada-frase {
+  margin: 0 0 24px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #44524a;
+}
+
+.boton-grande {
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.portada-dibujo {
+  flex: 1;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  background: #e3f1e8;
+}
+
+/* Cifras */
+.portada-cifras {
+  display: flex;
+  gap: 16px;
+}
+
+.cifra {
+  flex: 1;
+  padding: 16px;
+  text-align: center;
+  background: #f3efe4;
+  border-radius: 10px;
+}
+
+.cifra strong {
   display: block;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  background: #fff;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  font-size: 28px;
+  color: #1e4d3a;
 }
-.tarjeta-ruta:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
+
+.cifra span {
+  color: #44524a;
 }
-.tarjeta-ruta h3 { margin: 0 0 0.25rem 0; font-size: 1.05rem; }
-.tarjeta-provincia { margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem; }
-.tarjeta-datos { margin: 0; font-size: 0.9rem; }
-.etiqueta-dificultad { font-weight: bold; }
-.dificultad-fácil .etiqueta-dificultad { color: #2e7d32; }
-.dificultad-media .etiqueta-dificultad { color: #e65100; }
-.dificultad-difícil .etiqueta-dificultad { color: #c62828; }
+
+/* Cómo funciona */
+.titulo-seccion {
+  color: #1e4d3a;
+}
+
+.pasos {
+  display: flex;
+  gap: 16px;
+}
+
+.paso {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #d6e4da;
+  border-radius: 10px;
+}
+
+.paso h3 {
+  margin: 12px 0 6px;
+}
+
+.paso p {
+  margin: 0;
+  color: #44524a;
+}
+
+.paso-numero {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 50%;
+  background: #2e8b57;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.nota {
+  margin-top: 24px;
+  font-size: 13px;
+  color: #6b7a71;
+}
+
+/* Móvil */
+@media (max-width: 700px) {
+  nav a {
+    margin-left: 0;
+    margin-right: 16px;
+  }
+
+  .portada {
+    flex-direction: column;
+    padding-top: 28px;
+    text-align: center;
+  }
+
+  .portada h1 {
+    font-size: 30px;
+  }
+
+  .portada-dibujo {
+    max-width: 320px;
+  }
+
+  .pasos {
+    flex-direction: column;
+  }
+}
