@@ -89,6 +89,51 @@ nav a.activo {
 .dificultad-media .etiqueta-dificultad { color: #e65100; }
 .dificultad-difícil .etiqueta-dificultad { color: #c62828; }
 
+/* SCRUM-28: Filtros de búsqueda */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  padding: 16px;
+  margin-bottom: 8px;
+  background: #f3f7f4;
+  border-radius: 10px;
+}
+.filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #1e4d3a;
+}
+.filtros select {
+  min-width: 170px;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #cbd5cf;
+  border-radius: 6px;
+  background: #ffffff;
+}
+.boton-secundario {
+  cursor: pointer;
+  font-size: 15px;
+  background: #ffffff;
+  color: #1e4d3a;
+  border: 1px solid #2e8b57;
+}
+.boton-secundario:hover {
+  background: #e3f1e8;
+}
+.sin-resultados {
+  padding: 16px;
+  font-weight: bold;
+  color: #c62828;
+  background: #fdecea;
+  border-radius: 8px;
+}
+
 /* ===== Portada (página de inicio) ===== */
 
 .portada {
