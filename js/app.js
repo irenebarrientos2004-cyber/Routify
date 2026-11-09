@@ -7,7 +7,97 @@
 // Pendiente para otras historias:
 // - Diseño del listado en tarjetas (SCRUM-27)
 // - Mapa de la ruta (SCRUM-17)
-// - Favoritos con Local Storage
+
+// ===== SCRUM-30 · Guardar rutas en favoritos (Local Storage, sin cuenta) =====
+//
+// Se guarda en localStorage, con la clave "routify_favoritos", un array JSON
+// con los id de las rutas favoritas, por ejemplo [3, 15, 42].
+// Estas funciones también las usará la página "Mis favoritas".
+
+const CLAVE_FAVORITOS = "routify_favoritos";
+
+// Devuelve la lista de id favoritos (números, sin duplicados).
+// Si no hay nada guardado, los datos están mal o el navegador bloquea
+// el almacenamiento, devuelve una lista vacía en vez de romper la web.
+function obtenerFavoritos() {
+  let guardado = null;
+  try {
+    guardado = JSON.parse(localStorage.getItem(CLAVE_FAVORITOS));
+  } catch (e) {
+    return [];
+  }
+  if (!Array.isArray(guardado)) return [];
+
+  const ids = [];
+  guardado.forEach(function (valor) {
+    if (valor === null || valor === "") return; // Number(null) daría 0
+    const id = Number(valor);
+    if (Number.isInteger(id) && ids.indexOf(id) === -1) ids.push(id);
+  });
+  return ids;
+}
+
+// Guarda la lista de favoritos. Devuelve true si se ha podido guardar.
+function guardarFavoritos(ids) {
+  try {
+    localStorage.setItem(CLAVE_FAVORITOS, JSON.stringify(ids));
+    return true;
+  } catch (e) {
+    console.warn("No se han podido guardar los favoritos en este navegador");
+    return false;
+  }
+}
+
+// ¿Está la ruta guardada en favoritos?
+function esFavorita(id) {
+  return obtenerFavoritos().indexOf(Number(id)) !== -1;
+}
+
+// Guarda la ruta si no estaba (Escenario 1) o la quita si ya estaba (Escenario 2).
+// Devuelve el estado final: true si queda como favorita, false si no.
+function alternarFavorito(id) {
+  const numero = Number(id);
+  const favoritos = obtenerFavoritos();
+  const posicion = favoritos.indexOf(numero);
+
+  if (posicion === -1) {
+    favoritos.push(numero);
+  } else {
+    favoritos.splice(posicion, 1);
+  }
+
+  guardarFavoritos(favoritos);
+  return esFavorita(numero); // Si no se pudo guardar, el estado sigue como estaba
+}
+
+// Pone el corazón lleno o vacío según el estado de la ruta
+function pintarBotonFavorito(boton, favorita) {
+  boton.setAttribute("aria-pressed", favorita ? "true" : "false");
+  boton.title = favorita ? "Quitar de favoritos" : "Guardar en favoritos";
+  boton.querySelector(".corazon").textContent = favorita ? "♥" : "♡";
+  boton.classList.toggle("es-favorita", favorita);
+}
+
+// Crea el botón de corazón de una ruta (se usa en tarjetas y en la ficha)
+function crearBotonFavorito(ruta) {
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.className = "boton-favorito";
+  boton.setAttribute("aria-label", "Guardar en favoritos: " + ruta.nombre);
+
+  const corazon = document.createElement("span");
+  corazon.className = "corazon";
+  corazon.setAttribute("aria-hidden", "true");
+  boton.appendChild(corazon);
+
+  pintarBotonFavorito(boton, esFavorita(ruta.id));
+
+  boton.addEventListener("click", function () {
+    pintarBotonFavorito(boton, alternarFavorito(ruta.id));
+  });
+
+  return boton;
+}
 
 // Convierte horas con decimales en texto, por ejemplo 3.08 -> "3 h 5 min"
 function formatearDuracion(horas) {
@@ -63,6 +153,11 @@ function mostrarRutas(rutas) {
   lista.className = "lista-tarjetas";
 
   rutas.forEach(function (ruta) {
+    // Contenedor de la tarjeta: el enlace a la ficha y, a su lado, el corazón (SCRUM-30).
+    // El botón no puede ir dentro del <a>, porque al pulsarlo se abriría la ficha.
+    const contenedorTarjeta = document.createElement("div");
+    contenedorTarjeta.className = "tarjeta";
+
     const tarjeta = document.createElement("a");
     tarjeta.className = "tarjeta-ruta dificultad-" + ruta.dificultad.toLowerCase();
     tarjeta.href = "ficha.html?id=" + ruta.id; // Escenario 2: abre la ficha de la ruta
@@ -76,7 +171,9 @@ function mostrarRutas(rutas) {
         " · " + ruta.distancia_km + " km" +
       "</p>";
 
-    lista.appendChild(tarjeta);
+    contenedorTarjeta.appendChild(tarjeta);
+    contenedorTarjeta.appendChild(crearBotonFavorito(ruta));
+    lista.appendChild(contenedorTarjeta);
   });
 
   contenedor.appendChild(lista);
@@ -222,6 +319,14 @@ function mostrarFicha() {
     "<h2>Cómo llegar</h2>" +
     "<p>El punto de inicio está en las coordenadas " + ruta.latitud_inicio + ", " + ruta.longitud_inicio + ".</p>" +
     "<a class='boton' href='" + comoLlegar + "' target='_blank' rel='noopener'>Cómo llegar (Google Maps)</a>";
+
+  // SCRUM-30: corazón de favoritos junto al título de la ficha
+  const titulo = contenedor.querySelector("h1");
+  const cabeceraFicha = document.createElement("div");
+  cabeceraFicha.className = "ficha-titulo";
+  titulo.parentNode.insertBefore(cabeceraFicha, titulo);
+  cabeceraFicha.appendChild(titulo);
+  cabeceraFicha.appendChild(crearBotonFavorito(ruta));
 }
 
 // Escenario 2: el botón "Volver" regresa al listado con los filtros que había
