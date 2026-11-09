@@ -17,18 +17,20 @@
   </header>
 
   <main class="contenido">
-    <a href="rutas.html">← Volver al listado</a>
+    <!-- SCRUM-29 · Escenario 2: vuelve al listado manteniendo los filtros -->
+    <a href="rutas.html" id="volver" class="enlace-volver">← Volver al listado</a>
 
-    <!-- Aquí irán los datos de la ruta (historia de la ficha) -->
+    <!-- Datos de la ruta (SCRUM-29) -->
     <section id="detalle-ruta">
-      <h1>Ficha de ruta</h1>
-      <p>Ficha de la ruta (en construcción).</p>
+      <p>Cargando ruta…</p>
     </section>
 
-    <!-- Aquí irá el mapa de OpenStreetMap (historia del mapa) -->
+    <!-- Aquí irá el mapa de OpenStreetMap (SCRUM-17) -->
     <section id="mapa"></section>
   </main>
 
+  <!-- Datos de las rutas: tiene que ir ANTES de app.js -->
+  <script src="data/rutas.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
