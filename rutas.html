@@ -19,8 +19,34 @@
   <main class="contenido">
     <h1>Rutas</h1>
 
-    <!-- Aquí irán los filtros (historia de filtros) -->
-    <section id="filtros"></section>
+    <!-- Filtros por provincia, dificultad y duración (SCRUM-28) -->
+    <section id="filtros" class="filtros">
+      <label>
+        Provincia
+        <select id="filtro-provincia">
+          <option value="">Todas</option>
+        </select>
+      </label>
+      <label>
+        Dificultad
+        <select id="filtro-dificultad">
+          <option value="">Todas</option>
+          <option value="Fácil">Fácil</option>
+          <option value="Media">Media</option>
+          <option value="Difícil">Difícil</option>
+        </select>
+      </label>
+      <label>
+        Duración
+        <select id="filtro-duracion">
+          <option value="">Cualquiera</option>
+          <option value="0-2">Menos de 2 h</option>
+          <option value="2-4">De 2 a 4 h</option>
+          <option value="4-">Más de 4 h</option>
+        </select>
+      </label>
+      <button type="button" id="borrar-filtros" class="boton boton-secundario">Borrar filtros</button>
+    </section>
 
     <!-- Aquí se muestra el listado de rutas (SCRUM-33 conecta los datos, SCRUM-27 hace las tarjetas) -->
     <section id="listado-rutas">
