@@ -67,19 +67,28 @@ nav a.activo {
   gap: 1rem;
   margin-top: 1rem;
 }
+/* Contenedor de cada tarjeta: enlace + corazón de favoritos (SCRUM-30) */
+.tarjeta {
+  position: relative;
+  transition: transform 0.15s ease;
+}
+.tarjeta:hover {
+  transform: translateY(-2px);
+}
 .tarjeta-ruta {
   display: block;
+  height: 100%;
   padding: 1rem;
+  padding-right: 3.25rem; /* hueco para el corazón */
   border: 1px solid #ddd;
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
   background: #fff;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.15s ease;
 }
-.tarjeta-ruta:hover {
+.tarjeta:hover .tarjeta-ruta {
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
 }
 .tarjeta-ruta h3 { margin: 0 0 0.25rem 0; font-size: 1.05rem; }
 .tarjeta-provincia { margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem; }
@@ -181,6 +190,57 @@ nav a.activo {
   background: #fff4e5;
   border-left: 4px solid #e65100;
   border-radius: 6px;
+}
+
+/* SCRUM-30: Botón de favoritos (corazón) */
+.boton-favorito {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: #5b6660;
+  background: #ffffff;
+  border: 1px solid #cbd5cf;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.boton-favorito:hover {
+  color: #c62828;
+  border-color: #c62828;
+  background: #fdecea;
+}
+.boton-favorito:focus-visible {
+  outline: 3px solid #f4c95d;
+  outline-offset: 2px;
+}
+.boton-favorito.es-favorita {
+  color: #c62828;
+  border-color: #c62828;
+  background: #fdecea;
+}
+/* En la tarjeta, el corazón va en la esquina superior derecha */
+.tarjeta .boton-favorito {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+}
+/* En la ficha, el corazón va al lado del título */
+.ficha-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.ficha-titulo .boton-favorito {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  font-size: 26px;
 }
 
 /* ===== Portada (página de inicio) ===== */
