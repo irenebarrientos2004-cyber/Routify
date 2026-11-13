@@ -6,7 +6,7 @@
 //
 // Pendiente para otras historias:
 // - Diseño del listado en tarjetas (SCRUM-27)
-// - Mapa de la ruta (SCRUM-17)
+// El mapa de la ficha (SCRUM-17) está en js/mapa.js
 
 // ===== SCRUM-30 · Guardar rutas en favoritos (Local Storage, sin cuenta) =====
 //
@@ -327,6 +327,10 @@ function mostrarFicha() {
   titulo.parentNode.insertBefore(cabeceraFicha, titulo);
   cabeceraFicha.appendChild(titulo);
   cabeceraFicha.appendChild(crearBotonFavorito(ruta));
+
+  // SCRUM-17: mapa de OpenStreetMap con la ubicación de la ruta (js/mapa.js)
+  document.getElementById("ubicacion").hidden = false;
+  if (typeof crearMapa === "function") crearMapa("mapa", ruta);
 }
 
 // Escenario 2: el botón "Volver" regresa al listado con los filtros que había

@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Routify · Ficha de ruta</title>
+  <!-- Leaflet (SCRUM-17): estilos del mapa, antes de los nuestros -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -25,12 +29,22 @@
       <p>Cargando ruta…</p>
     </section>
 
-    <!-- Aquí irá el mapa de OpenStreetMap (SCRUM-17) -->
-    <section id="mapa"></section>
+    <!-- Mapa de OpenStreetMap (SCRUM-17): se muestra solo si se encuentra la ruta -->
+    <section id="ubicacion" class="ficha-ubicacion" hidden>
+      <h2>Ubicación</h2>
+      <div id="mapa"></div>
+    </section>
   </main>
+
+  <!-- Leaflet (SCRUM-17). Si no carga (sin internet), la ficha sigue funcionando sin mapa -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
 
   <!-- Datos de las rutas: tiene que ir ANTES de app.js -->
   <script src="data/rutas.js"></script>
+  <!-- Código del mapa: tiene que ir ANTES de app.js -->
+  <script src="js/mapa.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
