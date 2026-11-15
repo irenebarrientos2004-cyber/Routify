@@ -4,6 +4,10 @@ Web para encontrar rutas de senderismo (vías verdes) en España: filtrar por pr
 
 Proyecto de la asignatura Gestión de proyectos con metodologías ágiles (CUNEF).
 
+## Web publicada
+
+https://irenebarrientos2004-cyber.github.io/Routify/
+
 ## Funcionalidades
 
 | Funcionalidad | Historia | Estado |
@@ -14,9 +18,9 @@ Proyecto de la asignatura Gestión de proyectos con metodologías ágiles (CUNEF
 | Ficha de ruta y "Cómo llegar" | SCRUM-29 | Hecho |
 | Guardar rutas en favoritos | SCRUM-30 | Hecho |
 | Página "Mis favoritas" | SCRUM-31 | En desarrollo |
-| Mapa con OpenStreetMap | SCRUM-17 y SCRUM-22 | En desarrollo |
-| Diseño responsive | SCRUM-32 | En desarrollo |
-| Publicación en GitHub Pages | SCRUM-19 | En desarrollo |
+| Mapa con OpenStreetMap | SCRUM-17 y SCRUM-22 | Hecho |
+| Diseño responsive | SCRUM-32 | Hecho |
+| Publicación en GitHub Pages | SCRUM-19 | Hecho|
 
 ## Tecnología
 
