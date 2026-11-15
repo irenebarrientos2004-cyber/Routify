@@ -1,12 +1,14 @@
 # Routify
 
-Web para encontrar rutas de senderismo (vías verdes) en España: filtrar por provincia, dificultad y duración, ver la ficha de cada ruta con cómo llegar y guardar favoritas sin registrarse.
+Web para encontrar rutas de senderismo (vías verdes) en España: filtrar por provincia, dificultad y duración, ver la ficha de cada ruta con su mapa y cómo llegar, y guardar favoritas sin registrarse.
 
 Proyecto de la asignatura Gestión de proyectos con metodologías ágiles (CUNEF).
 
 ## Web publicada
 
 https://irenebarrientos2004-cyber.github.io/Routify/
+
+Funciona en ordenador y en móvil, sin instalar nada. Se actualiza sola cada vez que se une un cambio a `main`.
 
 ## Funcionalidades
 
@@ -17,16 +19,20 @@ https://irenebarrientos2004-cyber.github.io/Routify/
 | Filtros por provincia, dificultad y duración | SCRUM-28 | Hecho |
 | Ficha de ruta y "Cómo llegar" | SCRUM-29 | Hecho |
 | Guardar rutas en favoritos | SCRUM-30 | Hecho |
-| Página "Mis favoritas" | SCRUM-31 | En desarrollo |
-| Mapa con OpenStreetMap | SCRUM-17 y SCRUM-22 | Hecho |
-| Diseño responsive | SCRUM-32 | Hecho |
-| Publicación en GitHub Pages | SCRUM-19 | Hecho|
+| Mapa con OpenStreetMap | SCRUM-17 | Hecho |
+| Publicación en GitHub Pages | SCRUM-19 | Hecho |
+| Diseño responsive (móvil y escritorio) | SCRUM-32 | Hecho |
+| Página "Mis favoritas" | SCRUM-31 | Pendiente |
+| Detalles de inicio y fin de ruta en el mapa | SCRUM-22 | Pendiente |
+| Pruebas en navegadores y móviles | SCRUM-23 | Pendiente |
+| Registro y corrección de errores | SCRUM-26 | En curso |
+| Manual de uso (Confluence) | SCRUM-20 | Pendiente |
 
 ## Tecnología
 
 - HTML, CSS y JavaScript, sin frameworks
 - Local Storage del navegador para los favoritos
-- OpenStreetMap (con Leaflet) para los mapas
+- OpenStreetMap con Leaflet 1.9.4 para los mapas
 - Python (openpyxl) para limpiar los datos
 - Publicación en GitHub Pages
 
@@ -53,7 +59,8 @@ routify/
 ├── css/
 │   └── styles.css          Estilos de toda la web
 ├── js/
-│   └── app.js              Lógica de la web
+│   ├── app.js              Lógica de la web
+│   └── mapa.js             Mapa de la ficha (OpenStreetMap + Leaflet)
 ├── data/
 │   ├── rutas.js            Rutas que usa la web (generado)
 │   ├── rutas.json          Copia en JSON (generado)
@@ -63,11 +70,16 @@ routify/
     └── limpiar_rutas.py    Script de limpieza de datos
 ```
 
-## Cómo abrir la web en tu ordenador
+## Cómo abrir la web
 
+**Recomendado:** entra en el enlace de la web publicada (arriba).
+
+**En tu ordenador:**
 1. Descarga el repositorio (botón verde **Code** → **Download ZIP**) o clónalo.
 2. **Descomprime** el ZIP (clic derecho → Extraer todo). Si lo abres desde dentro del ZIP, la web sale sin estilos.
-3. Abre `index.html` con el navegador (Chrome, Edge o Firefox).
+3. Abre `index.html` con el navegador.
+
+> Al abrir los archivos desde el ordenador funciona todo **excepto el mapa**: los servidores de OpenStreetMap solo lo permiten desde una web publicada. Para ver el mapa, usa el enlace.
 
 ## Cómo trabajamos en GitHub
 
