@@ -179,6 +179,58 @@ function mostrarRutas(rutas) {
   contenedor.appendChild(lista);
 }
 
+// Muestra en "Mis favoritas" las rutas que el usuario ha guardado (SCRUM-31)
+function mostrarFavoritas() {
+  const contenedor = document.getElementById("listado-favoritas");
+  if (!contenedor) return; // No estamos en la página de Mis favoritas
+
+  const idsFavoritos = obtenerFavoritos();
+  const favoritas = obtenerRutas().filter(function (ruta) {
+    return idsFavoritos.indexOf(ruta.id) !== -1;
+  });
+
+  contenedor.innerHTML = "";
+
+  // Escenario 1: si no hay ninguna ruta guardada, se avisa en vez de dejarlo vacío
+  if (favoritas.length === 0) {
+    const aviso = document.createElement("p");
+    aviso.textContent = "Todavía no has guardado ninguna ruta.";
+    contenedor.appendChild(aviso);
+    return;
+  }
+
+  const resumen = document.createElement("p");
+  resumen.textContent = favoritas.length + " rutas guardadas";
+  contenedor.appendChild(resumen);
+
+  // Misma tarjeta que en Rutas (SCRUM-27), con el corazón para poder quitarlas de favoritas
+  const lista = document.createElement("div");
+  lista.className = "lista-tarjetas";
+
+  favoritas.forEach(function (ruta) {
+    const contenedorTarjeta = document.createElement("div");
+    contenedorTarjeta.className = "tarjeta";
+
+    const tarjeta = document.createElement("a");
+    tarjeta.className = "tarjeta-ruta dificultad-" + ruta.dificultad.toLowerCase();
+    tarjeta.href = "ficha.html?id=" + ruta.id;
+
+    tarjeta.innerHTML =
+      "<h3>" + ruta.nombre + "</h3>" +
+      "<p class='tarjeta-provincia'>" + ruta.provincia_texto + "</p>" +
+      "<p class='tarjeta-datos'>" +
+        "<span class='etiqueta-dificultad'>" + ruta.dificultad + "</span>" +
+        " · " + formatearDuracion(ruta.duracion_horas) +
+        " · " + ruta.distancia_km + " km" +
+      "</p>";
+
+    contenedorTarjeta.appendChild(tarjeta);
+    contenedorTarjeta.appendChild(crearBotonFavorito(ruta));
+    lista.appendChild(contenedorTarjeta);
+  });
+
+  contenedor.appendChild(lista);
+}
 // ===== SCRUM-28 · Filtros de búsqueda por provincia, dificultad y duración =====
 
 const IDS_FILTROS = ["filtro-provincia", "filtro-dificultad", "filtro-duracion"];
@@ -379,6 +431,7 @@ function mostrarCifrasPortada() {
 document.addEventListener("DOMContentLoaded", function () {
   iniciarFiltros();
   mostrarFicha();
+  mostrarFavoritas();
   prepararBotonVolver();
   mostrarCifrasPortada();
   console.log("Routify cargado: " + obtenerRutas().length + " rutas");
