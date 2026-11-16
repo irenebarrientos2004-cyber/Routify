@@ -22,11 +22,11 @@ Funciona en ordenador y en móvil, sin instalar nada. Se actualiza sola cada vez
 | Mapa con OpenStreetMap | SCRUM-17 | Hecho |
 | Publicación en GitHub Pages | SCRUM-19 | Hecho |
 | Diseño responsive (móvil y escritorio) | SCRUM-32 | Hecho |
-| Página "Mis favoritas" | SCRUM-31 | Pendiente |
+| Página "Mis favoritas" | SCRUM-31 | Hecho |
 | Detalles de inicio y fin de ruta en el mapa | SCRUM-22 | Hecho|
 | Pruebas en navegadores y móviles | SCRUM-23 | Pendiente |
 | Registro y corrección de errores | SCRUM-26 | En curso |
-| Manual de uso (Confluence) | SCRUM-20 | Pendiente |
+| Manual de uso (Confluence) | SCRUM-20 |En curso |
 
 ## Tecnología
 
