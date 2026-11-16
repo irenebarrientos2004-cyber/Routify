@@ -82,11 +82,16 @@ function crearMapa(contenedorId, ruta) {
     const mapa = L.map(contenedor, { scrollWheelZoom: false }); // la rueda sigue moviendo la página
     L.tileLayer(TESELAS_OSM, { maxZoom: 19, attribution: ATRIBUCION_OSM }).addTo(mapa);
 
-    L.marker(inicio, { title: ruta.nombre }).addTo(mapa).bindPopup(ruta.nombre);
+    L.marker(inicio, { title: "Inicio de la ruta" })
+      .addTo(mapa)
+      .bindPopup("<strong>Inicio de la ruta</strong><br>" + ruta.nombre);
 
-    // Si hay punto de fin, se encuadran inicio y fin
+    // Si hay punto de fin, se marca y se encuadran inicio y fin
     const fin = leerPunto(ruta.latitud_fin, ruta.longitud_fin);
     if (fin) {
+      L.circleMarker(fin, { radius: 8, color: "#c0392b", fillColor: "#c0392b", fillOpacity: 0.9 })
+        .addTo(mapa)
+        .bindPopup("<strong>Fin de la ruta</strong>");
       mapa.fitBounds([inicio, fin], { padding: [40, 40], maxZoom: ZOOM_MAXIMO });
     } else {
       mapa.setView(inicio, ZOOM_UN_PUNTO);

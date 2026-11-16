@@ -300,9 +300,20 @@ function mostrarFicha() {
     avisos = "<div class='ficha-aviso'><strong>Aviso:</strong> " + ruta.avisos.join(" ") + "</div>";
   }
 
-  // Cómo llegar: enlace al punto de inicio en Google Maps
-  const comoLlegar = "https://www.google.com/maps/dir/?api=1&destination=" +
-    ruta.latitud_inicio + "," + ruta.longitud_inicio;
+    // Cómo llegar: enlace al punto de inicio en Google Maps (solo con coordenadas válidas y fiables)
+  const puntoInicio = leerPunto(ruta.latitud_inicio, ruta.longitud_inicio);
+  let bloqueComoLlegar =
+    "<h2>Cómo llegar</h2>" +
+    "<p>El punto de inicio no está disponible para esta ruta.</p>";
+
+  if (puntoInicio && ruta.coordenadas_fiables !== false) {
+    const comoLlegar = "https://www.google.com/maps/dir/?api=1&destination=" +
+      puntoInicio[0] + "," + puntoInicio[1];
+    bloqueComoLlegar =
+      "<h2>Cómo llegar</h2>" +
+      "<p>El punto de inicio está en las coordenadas " + puntoInicio[0] + ", " + puntoInicio[1] + ".</p>" +
+      "<a class='boton' href='" + comoLlegar + "' target='_blank' rel='noopener'>Cómo llegar</a>";
+  }
 
   contenedor.innerHTML =
     "<p class='ficha-provincia'>" + ruta.provincia_texto + " · " + (ruta.comunidades || []).join(", ") + "</p>" +
@@ -316,9 +327,7 @@ function mostrarFicha() {
     "<h2>Descripción</h2>" +
     "<p>Recorrido: " + ruta.descripcion + ".</p>" +
     "<p>Firme: " + ruta.firme + " · Estado: " + ruta.estado + "</p>" +
-    "<h2>Cómo llegar</h2>" +
-    "<p>El punto de inicio está en las coordenadas " + ruta.latitud_inicio + ", " + ruta.longitud_inicio + ".</p>" +
-    "<a class='boton' href='" + comoLlegar + "' target='_blank' rel='noopener'>Cómo llegar (Google Maps)</a>";
+        bloqueComoLlegar;
 
   // SCRUM-30: corazón de favoritos junto al título de la ficha
   const titulo = contenedor.querySelector("h1");
