@@ -10,6 +10,11 @@ const ATRIBUCION_OSM =
 const ZOOM_UN_PUNTO = 13; // Zoom cuando solo hay coordenadas de inicio
 const ZOOM_MAXIMO = 15;   // Para que no se acerque demasiado si inicio y fin están juntos
 
+// SCRUM-44: trazados oficiales de las vías verdes (licencia CC BY 4.0, hay que citarlos)
+const ATRIBUCION_RECORRIDOS =
+  'Recorridos: <a href="https://centrodedescargas.cnig.es/CentroDescargas/vias-verdes">CNIG-IGN</a> / FFE';
+const COLOR_RECORRIDO = "#1e4d3a"; // Verde de la cabecera de Routify
+
 // Convierte una coordenada en número. Devuelve null si falta (null, "", undefined) o no es válida.
 function leerCoordenada(valor) {
   if (valor === null || valor === undefined || valor === "") return null;
@@ -44,11 +49,32 @@ function mostrarMensajeMapa(contenedor, mensaje, detalle) {
   }
 }
 
+// SCRUM-44: devuelve los tramos del recorrido de una ruta, o null si no tiene.
+// RECORRIDOS viene de data/recorridos.js (generado por scripts/generar_recorridos.py).
+function obtenerRecorrido(ruta) {
+  if (typeof RECORRIDOS === "undefined" || !RECORRIDOS) return null;
+  const tramos = RECORRIDOS[ruta.id];
+  if (!Array.isArray(tramos) || tramos.length === 0) return null;
+  return tramos;
+}
+
+// SCRUM-44: escribe una nota debajo del mapa (por ejemplo, "Recorrido no disponible")
+function mostrarNotaRecorrido(contenedor, texto) {
+  let nota = document.getElementById("nota-recorrido");
+  if (!nota) {
+    nota = document.createElement("p");
+    nota.id = "nota-recorrido";
+    nota.className = "mapa-detalle";
+    contenedor.insertAdjacentElement("afterend", nota);
+  }
+  nota.textContent = texto;
+}
+
 // Crea el mapa de una ruta dentro del elemento con id contenedorId.
-// - Centra el mapa en el punto de inicio y le pone un marcador.
-// - Si también hay punto de fin, ajusta el zoom para que se vean los dos.
-// Devuelve el objeto mapa de Leaflet (para añadirle más cosas, p. ej. SCRUM-22)
-// o null si no se ha podido mostrar el mapa.
+// - Dibuja el recorrido completo de la ruta si lo tenemos (SCRUM-44).
+// - Marca el punto de inicio y el de fin (SCRUM-22).
+// - Ajusta el zoom para que se vea toda la ruta.
+// Devuelve el objeto mapa de Leaflet o null si no se ha podido mostrar el mapa.
 function crearMapa(contenedorId, ruta) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor || !ruta) return null;
@@ -82,16 +108,37 @@ function crearMapa(contenedorId, ruta) {
     const mapa = L.map(contenedor, { scrollWheelZoom: false }); // la rueda sigue moviendo la página
     L.tileLayer(TESELAS_OSM, { maxZoom: 19, attribution: ATRIBUCION_OSM }).addTo(mapa);
 
+    // SCRUM-44 · Escenario 1: línea con el recorrido completo (debajo de los marcadores)
+    const tramos = obtenerRecorrido(ruta);
+    let lineaRecorrido = null;
+    if (tramos) {
+      lineaRecorrido = L.polyline(tramos, { color: COLOR_RECORRIDO, weight: 5, opacity: 0.85 })
+        .addTo(mapa)
+        .bindPopup("<strong>Recorrido de la ruta</strong><br>" + ruta.nombre);
+      mapa.attributionControl.addAttribution(ATRIBUCION_RECORRIDOS);
+    } else {
+      // SCRUM-44 · Escenario 2: sin trazado, se ven solo inicio y fin
+      mostrarNotaRecorrido(contenedor, "Recorrido no disponible: se muestran solo el inicio y el fin de la ruta.");
+    }
+
     L.marker(inicio, { title: "Inicio de la ruta" })
       .addTo(mapa)
       .bindPopup("<strong>Inicio de la ruta</strong><br>" + ruta.nombre);
 
-    // Si hay punto de fin, se marca y se encuadran inicio y fin
+    // Si hay punto de fin, se marca
     const fin = leerPunto(ruta.latitud_fin, ruta.longitud_fin);
     if (fin) {
       L.circleMarker(fin, { radius: 8, color: "#c0392b", fillColor: "#c0392b", fillOpacity: 0.9 })
         .addTo(mapa)
         .bindPopup("<strong>Fin de la ruta</strong>");
+    }
+
+    // Encuadre: todo el recorrido si lo hay; si no, inicio y fin; si no, solo el inicio
+    if (lineaRecorrido) {
+      const limites = lineaRecorrido.getBounds().extend(inicio);
+      if (fin) limites.extend(fin);
+      mapa.fitBounds(limites, { padding: [30, 30], maxZoom: ZOOM_MAXIMO });
+    } else if (fin) {
       mapa.fitBounds([inicio, fin], { padding: [40, 40], maxZoom: ZOOM_MAXIMO });
     } else {
       mapa.setView(inicio, ZOOM_UN_PUNTO);
