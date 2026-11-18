@@ -25,9 +25,9 @@ Funciona en ordenador y en móvil, sin instalar nada. Se actualiza sola cada vez
 | Recorrido completo de la ruta en el mapa | SCRUM-44 | Hecho |
 | Publicación en GitHub Pages | SCRUM-19 | Hecho |
 | Diseño responsive (móvil y escritorio) | SCRUM-32 | Hecho |
-| Pruebas en navegadores y móviles | SCRUM-23 | Pendiente |
-| Registro y corrección de errores | SCRUM-26 | En curso |
-| Manual de uso (Confluence) | SCRUM-20 | Pendiente |
+| Pruebas en navegadores y móviles | SCRUM-23 | Hecho |
+| Registro y corrección de errores | SCRUM-26 | Hecho |
+| Manual de uso (Confluence) | SCRUM-20 | Hecho|
 
 ## Tecnología
 
